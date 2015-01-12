@@ -1,0 +1,25 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Complete.aspx.cs" Inherits="emailTicket.Complete" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Ticket Complete</title>
+    <link rel="stylesheet" type="text/css" href="index.css" />
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+        <% string emailExists = Request.QueryString["emailExists"]; %>
+        <div class="label">Thank you for using the QuickPractice Online Support System!<br />
+            <% if (emailExists == "True")
+               { %>
+                   You have been e-mailed a receipt of this ticket. <br />
+             <%  } %>
+            A support representative will contact you as soon as a solution to your issue has been identified.
+        </div>
+        <div class="homelink"><a href="http://www.quickpractice.com/" target="_top">Back to QuickPractice.com</a></div>
+    </div>
+    </form>
+</body>
+</html>

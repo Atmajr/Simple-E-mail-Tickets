@@ -1,0 +1,44 @@
+﻿body {
+    width: 1200px;
+    height: 1400px;
+    margin: 0px 0px 0px 0px;
+    padding: 0;
+    background-color: #D4E3EA;
+}
+h1 {
+    font: 180% arial,verdana,helvetica,sans-serif;
+    color: rgb(45, 96, 117);
+    margin: 15px 0px;
+    text-align:left;
+}
+.label {
+    font: 100% arial,verdana,helvetica,sans-serif;
+    color: rgb(153, 0, 0);
+    margin-left: 10px;
+    padding-right: 10px;
+}
+.textbox {
+    position:absolute;
+    left:200px;
+}
+.validator {
+    position:absolute;
+    left: 350px;
+    padding-left:10px;
+}
+.panel {
+    position: absolute;
+    left: 80px;
+    padding-left: 10px;
+    top: 693px;
+}
+.radiobutton {
+    position: relative;
+    left: 200px;
+    top: -25px;
+}
+.homelink {
+    font: 140% arial,verdana,helvetica,sans-serif;
+    text-align: center;
+    margin-top: 50px;
+}

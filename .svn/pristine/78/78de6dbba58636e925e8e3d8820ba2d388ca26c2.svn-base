@@ -1,0 +1,245 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.IO;
+using System.Text;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+//TO DO:
+//- break out ticket to text file for easy editing
+//- styling
+
+namespace emailTicket
+{
+    public partial class Index : System.Web.UI.Page
+    {
+        private string[] emailArray = new string[] { };
+        private string[] managerEmail = new string[] { };
+        private string[] generalEmail = new string[] { };
+        //private string[] autoReponseLines = new string[] { };
+        private int emailCount;
+        private int numberOfEmails;
+        private int ccToManager = 0;
+        private int ccToGeneral = 0;
+        private string autoResponse = "";
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            startValidation();
+            List<string> emailList = emailArray.ToList<string>();
+            List<string> managerList = managerEmail.ToList<string>();
+            List<string> generalList = generalEmail.ToList<string>();
+            //List<string> emailList;
+            //List<string> managerList;
+            //List<string> generalList;
+            string addressType;
+            string address;
+
+            //check to see if the link came pre-populated with CIN and/or username
+            //and, if it did, auto-populate the textboxes.
+            try
+            {
+                string cin = Request.QueryString["cin"];
+                if (!(string.IsNullOrEmpty(cin)))
+                {
+                    textboxCIN.Text = cin;
+                }
+            }
+            catch
+            {
+                return;
+            }
+
+            try
+            {
+                string username = Request.QueryString["name"];
+                if (!(string.IsNullOrEmpty(username)))
+                {
+                    textboxName.Text = username;
+                }
+            }
+            catch
+            {
+                return;
+            }
+            
+
+            //open emailList.txt and save each line as a value in an array
+            string[] lines = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"emailList.txt"));
+
+            //iterate through the array an organize the e-mail addresses into their respective lists
+            foreach (string line in lines)
+            {
+                addressType = line.Substring(0, 7);
+                address = line.Substring(8);
+                switch (addressType)
+                {
+                    case "manager":
+                        managerList.Add(address);
+                        break;
+
+                    case "general":
+                        generalList.Add(address);
+                        break;
+
+                    case "support":
+                        emailList.Add(address);
+                        break;       
+                }
+            }
+
+            //open autoResponse.txt and save each line as a value in an array
+            string[] autoResponseLines = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"autoResponse.txt"));
+
+            //combine the lines in a string with proper line breaks
+            foreach (string line in autoResponseLines)
+            {
+                autoResponse = autoResponse + line + "\r\n";
+            }
+
+            //convert the lists to arrays for easier programmability
+            emailArray = emailList.ToArray<string>();
+            managerEmail = managerList.ToArray<string>();
+            generalEmail = generalList.ToArray<string>();
+
+            string jumble = "";
+            lines = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"config.txt"));
+
+            foreach (string line in lines)
+            {
+                jumble += line;
+            }
+
+            string[] split = jumble.Split(new Char[] { '|' });
+            numberOfEmails = Convert.ToInt32(split[1]);
+            emailCount = Convert.ToInt32(split[3]);
+            ccToGeneral = Convert.ToInt32(split[7]);
+            ccToManager = Convert.ToInt32(split[5]);
+
+        }
+
+        protected void buttonSubmit_Click(object sender, EventArgs e)
+        {
+
+            if (!submitTimeValidation())
+                return;
+            else
+            {
+                string name = textboxName.Text;
+                string cin = textboxCIN.Text;
+                string email = textboxEmail.Text;
+                string phone = textboxPhone.Text;
+                string issue = textboxIssue.Text;
+                DateTime currentTime = DateTime.Now;
+                string format = "MMM ddd d HH:mm yyyy";
+                string ticketTime = currentTime.ToString(format);
+                string contactPref = "E-mail";
+
+                if (contactPrefRadioButton.SelectedIndex == 1)
+                {
+                    contactPref = "Phone";
+                }
+
+                //testing only; remove before production
+                //returnPanel.Controls.Add(new LiteralControl("Name: " + name + "<br />CIN: " + cin + "<br />Email: " + email + "<br />Phone: " + phone + "<br / >Preferred contact method:" + contactPref + "<br />" + issue));
+
+                //build ticket body
+                string body = "Client Name: " + name + "\r\n" + "CIN: " + cin + "\r\n" + "E-mail: " + email + "\r\n" + "Phone: " + phone + "\r\n" + "Preferred contact method: " + contactPref + "\r\n\r\n" + issue;
+
+                //build auto-response message body
+                StringBuilder autoResponseBuilder = new StringBuilder(autoResponse);
+                autoResponseBuilder.Replace("<datetime>", ticketTime);
+                autoResponseBuilder.Replace("<contactPref>", contactPref);
+                autoResponseBuilder.Replace("<ticket>", body);
+                autoResponse = autoResponseBuilder.ToString();
+
+                if (emailCount < (numberOfEmails - 1))
+                {
+                    emailCount++;
+                }
+
+                else
+                {
+                    emailCount = 0;
+                }
+
+                string output = "numberOfEmails|" + numberOfEmails + "|emailCount|" + emailCount + "|ccToManager|" + ccToManager + "|ccToGeneral|" + ccToGeneral + "|";
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"config.txt");
+                File.WriteAllText(path, output);
+
+                System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
+                message.To.Add(emailArray[emailCount]);
+                foreach (string manager in managerEmail)
+                {
+                    message.To.Add(manager);
+                }
+                message.Subject = "QuickPractice TroubleTicket - CIN: " + cin;
+                //message.From = new System.Net.Mail.MailAddress("support@quickpractice.com");
+                message.From = new System.Net.Mail.MailAddress("onlinesupport@quickpractice.com");
+                message.Body = body;
+                System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient();
+                smtp.Send(message);
+
+                System.Net.Mail.MailMessage autoResponseMessage = new System.Net.Mail.MailMessage();
+                autoResponseMessage.To.Add(email);
+                autoResponseMessage.Subject = "QuickPractice Trouble Ticket Receipt";
+                autoResponseMessage.From = new System.Net.Mail.MailAddress("onlinesupport@quickpractice.com");
+                autoResponseMessage.Body = autoResponse;
+                smtp.Send(autoResponseMessage);
+
+                returnPanel.Controls.Add(new LiteralControl("<div class=label>Thank you for using the QuickPractice Online Support System!<br />If you specified an e-mail address, you will receive a receipt of this ticket.<br />A support representative will contact you as soon as a solution to your issue has been identified."));
+            }
+            
+        }
+
+        void startValidation()
+        {
+            textboxName.TextChanged -= textChanged;
+            textboxName.TextChanged += textChanged;
+            textboxCIN.TextChanged -= textChanged;
+            textboxCIN.TextChanged += textChanged;
+            textboxEmail.TextChanged -= textChanged;
+            textboxEmail.TextChanged += textChanged;
+            textboxPhone.TextChanged -= textChanged;
+            textboxPhone.TextChanged += textChanged;
+            textboxIssue.TextChanged -= textChanged;
+            textboxIssue.TextChanged += textChanged;
+        }
+        
+        void textChanged(object sender, EventArgs e)
+        {
+            Validate();
+        }
+
+        public bool submitTimeValidation()
+        {
+            if (string.IsNullOrEmpty(textboxCIN.Text))
+            {
+                errorPanel.Controls.Add(new LiteralControl("<font color='red'>CIN is required!"));
+                return false;
+            }
+
+            else if (string.IsNullOrEmpty(textboxIssue.Text))
+            {
+                errorPanel.Controls.Add(new LiteralControl("<font color='red'>You must describe your issue!"));
+                return false;
+            }
+
+            else if ((string.IsNullOrEmpty(textboxEmail.Text)) && (string.IsNullOrEmpty(textboxPhone.Text)))
+            {
+                errorPanel.Controls.Add(new LiteralControl("<font color='red'>Either phone number or e-mail is required."));
+                return false;
+            }
+
+            else
+            {
+                return true;
+            }
+
+        }
+
+    }
+
+}

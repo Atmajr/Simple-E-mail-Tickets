@@ -1,0 +1,63 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Index.aspx.cs" Inherits="emailTicket.Index" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>QuickPractice Online Support System</title>
+    <link rel="stylesheet" type="text/css" href="index.css" />
+    <style type="text/css">
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div class="form">
+        <h1>QuickPractice Support Ticket System</h1>
+        <asp:Label ID="Label1" runat="server" Text="Name" CssClass="label"></asp:Label>
+        <asp:TextBox ID="textboxName" runat="server" CssClass="textbox"></asp:TextBox>
+        <asp:RequiredFieldValidator ID="nameRequiredValidator" runat="server" ControlToValidate="textboxName" ErrorMessage="Name is required." ForeColor="#FF3300" CssClass="validator"></asp:RequiredFieldValidator>
+        <br />
+        <br />
+        <asp:Label ID="Label2" runat="server" Text="CIN" CssClass="label"></asp:Label>
+        <asp:TextBox ID="textboxCIN" runat="server" ToolTip="Your QuickPractice Client ID Number" CssClass="textbox"></asp:TextBox>
+        <asp:RequiredFieldValidator ID="cinRequiredValidator" runat="server" ControlToValidate="textboxCIN" ErrorMessage="CIN is required." ForeColor="#FF3300" CssClass="validator"></asp:RequiredFieldValidator>
+&nbsp;
+        <asp:RegularExpressionValidator ID="cinRegexValidator" runat="server" ControlToValidate="textboxCIN" ErrorMessage="CIN should be five numbers. Are you missing a zero?" ForeColor="#FF3300" ValidationExpression="\d{5}?" CssClass="validator"></asp:RegularExpressionValidator>
+        <br />
+        <br />
+        <asp:Label ID="Label3" runat="server" Text="E-Mail Address" CssClass="label"></asp:Label>
+        <asp:TextBox ID="textboxEmail" runat="server" TextMode="Email" ToolTip="Contact e-mail address" ValidateRequestMode="Enabled" CssClass="textbox"></asp:TextBox>
+        <asp:RegularExpressionValidator ID="emailRegexValidator" runat="server" ControlToValidate="textboxEmail" ErrorMessage="E-mail address appears invalid." ForeColor="#FF3300" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" CssClass="validator"></asp:RegularExpressionValidator>
+        <br />
+        <br />
+        <asp:Label ID="Label4" runat="server" Text="Phone" CssClass="label"></asp:Label>
+        <asp:TextBox ID="textboxPhone" runat="server" TextMode="Phone" ToolTip="Contact phone number" ValidateRequestMode="Enabled" CssClass="textbox"></asp:TextBox>
+        <asp:RegularExpressionValidator ID="phoneRegexValidator" runat="server" ControlToValidate="textboxPhone" ErrorMessage="Phone number appears invalid." ForeColor="#FF3300" ValidationExpression="\(?\d{3}\)?-? *\d{3}-? *-?\d{4}" CssClass="validator"></asp:RegularExpressionValidator>
+        <asp:Label ID="Label6" runat="server" ForeColor="#FF3300" Text="You must enter either a phone number or e-mail address." Visible="False" CssClass="validator"></asp:Label>
+        <br />
+        <br />
+        <asp:Label ID="Label5" runat="server" Text="Preferred Contact Method:" CssClass="label"></asp:Label>
+        <asp:RadioButtonList ID="contactPrefRadioButton" runat="server" Height="27px" RepeatColumns="2" RepeatDirection="Horizontal" ToolTip="How would you like to receive your answer?" Width="205px" CssClass="radiobutton">
+            <asp:ListItem>E-Mail</asp:ListItem>
+            <asp:ListItem>Phone</asp:ListItem>
+        </asp:RadioButtonList>
+        <br />
+        <br />
+        <asp:Label ID="Label7" runat="server" CssClass="label" Text="Please explain your issue using the box below"></asp:Label>
+        <asp:RequiredFieldValidator ID="issueRequiredValidator" runat="server" ControlToValidate="textboxIssue" ErrorMessage="You must describe your issue." ForeColor="#FF3300" CssClass="validator"></asp:RequiredFieldValidator>
+        <br />
+        <asp:TextBox ID="textboxIssue" runat="server" Height="327px" Rows="100" TextMode="MultiLine" ToolTip="Describe the nature of the problem in detail" Width="494px"></asp:TextBox>
+        <br />
+        <br />
+        <asp:Button ID="buttonSubmit" runat="server" OnClick="buttonSubmit_Click" Text="Submit" />
+        <asp:Panel ID="errorPanel" runat="server" CssClass="panel" Height="22px" Width="956px">
+        </asp:Panel>
+        <br />
+        <br />
+        <asp:Panel ID="returnPanel" runat="server">
+        </asp:Panel>
+    
+    </div>
+    </form>
+</body>
+</html>
