@@ -1,0 +1,6 @@
+﻿general|general@yourtechsupportcompany.com
+manager|manage@yourtechsupportcompany.com
+support|support_rep1@yourtechsupportcompany.com
+support|support_rep2@yourtechsupportcompany.com
+support|support_rep3@yourtechsupportcompany.com
+support|support_rep4@yourtechsupportcompany.com

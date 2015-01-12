@@ -1,0 +1,6 @@
+c:\users\justin\documents\visual studio 2012\Projects\emailTicket\emailTicket\bin\emailTicket.dll
+c:\users\justin\documents\visual studio 2012\Projects\emailTicket\emailTicket\bin\emailTicket.pdb
+c:\users\justin\documents\visual studio 2012\Projects\emailTicket\emailTicket\obj\Debug\emailTicket.dll
+c:\users\justin\documents\visual studio 2012\Projects\emailTicket\emailTicket\obj\Debug\emailTicket.pdb
+C:\Users\Justin\Documents\Visual Studio 2012\Projects\emailTicket\emailTicket\bin\emailTicket.dll.CodeAnalysisLog.xml
+C:\Users\Justin\Documents\Visual Studio 2012\Projects\emailTicket\emailTicket\bin\emailTicket.dll.lastcodeanalysissucceeded

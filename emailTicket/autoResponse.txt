@@ -1,0 +1,15 @@
+﻿Thank you for contacting Tech Company Support. This is an automated message to inform you that your Tech Company Support Ticket was created at <datetime>. 
+You indicated a contact method preference of <contactPref>.
+One of our support staff will contact you within one business day.
+
+A copy of your ticket is displayed below for your records:
+
+<issue>
+
+
+PLEASE DO NOT RESPOND TO THIS E-MAIL. THIS IS AN AUTOMATIC, UNMONITORED NOTIFICATION.
+
+Thank you,
+Tech Company Support Staff
+noreply@techcompany.com
+555-555-1234 M - F, 9am - 7pm EST

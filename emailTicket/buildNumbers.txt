@@ -1,0 +1,13 @@
+﻿3.1|Windows NT 3.1
+3.5|Windows NT 3.5
+4.0|Windows NT 4.0
+4.0|Windows 95
+4.1|Windows 98
+4.9|Windows ME
+5.0|Windows 2000
+5.1|Windows XP
+5.2|Windows Server 2003
+6.0|Windows Vista
+6.1|Windows 7
+6.2|Windows 8/Server 2008
+6.3|Windows 8.1
