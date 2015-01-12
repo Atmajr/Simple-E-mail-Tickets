@@ -19,7 +19,8 @@ Context:
 S.E.T. is designed to be a low-power, low-requirement solution for trouble ticketing in an environment which requires minimal oversight and security and does not have a need for end-user accounts and ticket updates.
 When a client visits Index.aspx, they are presented with a form into which they can enter their contact information and the nature of their issue.
 On PageLoad, Index.aspx looks for a QueryString in format ?CIN=99999&RegisteredName=John%20Doe&ProductType=Professional&ProductVersion=6.1.2&OSVersion=6.1.7601.2
-If it finds the variable CIN in the QueryString, it will auto-populate the CIN textbox with that value.
+If it finds the variable CIN in the QueryString, it will auto-populate the CIN textbox with that value. This behavior can be used to call the ticketing system from a desktop
+client and send information useful to the support staff.
 
 Each text field on the form has a number of validations associated with it.
 -Name:			on submit - validates name is present
@@ -39,7 +40,7 @@ Currently, it simply presents a link back to the QuickPractice home page.
 2.)Using the configuration files
 ----
 
-emailTicket comes packaged with four plaintext configuration files which can be edited to allow for some control over the app without the need to recompile.
+S.E.T. comes packaged with four plaintext configuration files which can be edited to allow for some control over the app without the need to recompile.
 The usage and formatting of these files is explained below.
 
 2a.) config.txt
@@ -92,7 +93,7 @@ QueryString variables:
 <registeredName>	- the name registered in the QuickPractice software - QueryString as ?RegisteredName=
 <productType>		- type of QuickPractice product (Standard, Deluxe, Professional) - QueryString as ?ProductType=
 <productVersion>	- version number of QuickPractice product - QueryString as ?ProductVersion=	
-<osVersion>			- version of the Windows OS. Sent as a build number in the QueryString as ?OSVersion= . If the build is recognized, emailTicket sends a human readable version number (e.g. Windows 7), otherwise it sends a build number (e.g. Windows Build 6.40.1975)
+<osVersion>			- version of the Windows OS. Sent as a build number in the QueryString as ?OSVersion= . If the build is recognized, S.E.T. sends a human readable version number (e.g. Windows 7), otherwise it sends a build number (e.g. Windows Build 6.40.1975)
 
 
 2d.) autoResponse.txt
